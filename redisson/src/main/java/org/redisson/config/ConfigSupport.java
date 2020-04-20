@@ -185,7 +185,12 @@ public class ConfigSupport {
     public String toYAML(Config config) throws IOException {
         return yamlMapper.writeValueAsString(config);
     }
-    
+
+    /**
+     * 据配置config的类型(主从模式、单机模式、哨兵模式、集群模式、亚马逊云模式、微软云模式)而进行不同的初始化
+     * @param configCopy
+     * @return
+     */
     public static ConnectionManager createConnectionManager(Config configCopy) {
         UUID id = UUID.randomUUID();
         

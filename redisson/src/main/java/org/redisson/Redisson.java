@@ -59,9 +59,11 @@ public class Redisson implements RedissonClient {
 
     protected Redisson(Config config) {
         this.config = config;
+        //配置备份
         Config configCopy = new Config(config);
-
+        //根据配置config的类型(主从模式、单机模式、哨兵模式、集群模式、亚马逊云模式、微软云模式)而进行不同的初始化
         connectionManager = ConfigSupport.createConnectionManager(configCopy);
+        //连接池对象回收调度器
         evictionScheduler = new EvictionScheduler(connectionManager.getCommandExecutor());
         writeBehindService = new WriteBehindService(connectionManager.getCommandExecutor());
     }
@@ -96,6 +98,7 @@ public class Redisson implements RedissonClient {
 
     /**
      * Create sync/async Redisson instance with provided config
+     * 根据配置 Config 创建 redisson 操作类 RedissonClient
      *
      * @param config for Redisson
      * @return Redisson instance
@@ -333,6 +336,11 @@ public class Redisson implements RedissonClient {
 
     @Override
     public RLock getLock(String name) {
+        /**
+         * 构造并返回一个 RedissonLock 对象
+         * commandExecutor: 与 Redis 节点通信并发送指令的真正实现。需要说明一下，CommandExecutor 实现是通过 eval 命令来执行 Lua 脚本
+         * name: 锁的全局名称
+         */
         return new RedissonLock(connectionManager.getCommandExecutor(), name);
     }
     

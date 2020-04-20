@@ -542,6 +542,7 @@ public class CommandAsyncService implements CommandAsyncExecutor {
             args.add(keys.size());
             args.addAll(keys);
             args.addAll(Arrays.asList(params));
+
             async(false, nodeSource, codec, cmd, args.toArray(), promise, false);
             
             promise.onComplete((res, e) -> {
